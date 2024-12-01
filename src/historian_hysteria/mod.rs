@@ -20,10 +20,15 @@ pub fn solve(path: String) {
         .unzip::<_, _, Vec<u32>, Vec<u32>>();
     left.sort();
     right.sort();
-    let result = left
+    let difference = left
         .iter()
         .zip(right.iter())
         .map(|(left, right)| left.abs_diff(*right))
-        .fold(0, |acc, x| std::ops::Add::add(acc, x));
-    println!("Part 1: {}", result);
+        .fold(0, |acc, x| acc + x);
+    println!("Part 1: Difference is {}", difference);
+    let similarity_score = left.iter().fold(0, |acc, x| {
+        let times = right.iter().filter(|y| y == &x).count() as u32;
+        acc + x * times
+    });
+    println!("Part 2: Similarity score is {}", similarity_score);
 }
