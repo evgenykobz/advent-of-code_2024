@@ -1,6 +1,6 @@
 [package]
 name = "advent-of-code_2024"
-description = "Advent Of Code 2024 tasks solved"
+description = "Advent Of Code 2024 puzzles"
 version = "0.0.1"
 edition = "2021"
 
