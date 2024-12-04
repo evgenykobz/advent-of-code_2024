@@ -147,4 +147,78 @@ pub fn solve(path: String) {
         total + line_total
     });
     println!("Part One: XMAS appears {result} times");
+    let result = lines.iter().enumerate().fold(0, |total, (line_ix, line)| {
+        let line_total = line.match_indices("A").fold(0, |line_total, (a_ix, _)| {
+            let iter_result = line_ix
+                .checked_sub(1)
+                .and_then(|line_ix| lines.get(line_ix))
+                .and_then(|line| {
+                    a_ix.checked_sub(1)
+                        .and_then(|letter_ix| line.chars().nth(letter_ix))
+                        .and_then(|letter| letter.to_string().into())
+                        .and_then(|letter| {
+                            letter
+                                .eq("M")
+                                .then_some("M")
+                                .or_else(|| letter.eq("S").then_some("S"))
+                        })
+                        .and_then(|top_left_letter| {
+                            line_ix
+                                .checked_add(1)
+                                .and_then(|line_ix| lines.get(line_ix))
+                                .and_then(|line| {
+                                    a_ix.checked_add(1)
+                                        .and_then(|letter_ix| line.chars().nth(letter_ix))
+                                        .and_then(|letter| letter.to_string().into())
+                                        .and_then(|letter| {
+                                            if top_left_letter.eq("M") && letter.eq("S") {
+                                                Some(())
+                                            } else if top_left_letter.eq("S") && letter.eq("M") {
+                                                Some(())
+                                            } else {
+                                                None
+                                            }
+                                        })
+                                })
+                        })
+                        .and_then(|_| line_ix.checked_sub(1))
+                        .and_then(|line_ix| lines.get(line_ix))
+                        .and_then(|line| {
+                            a_ix.checked_add(1)
+                                .and_then(|letter_ix| line.chars().nth(letter_ix))
+                                .and_then(|letter| letter.to_string().into())
+                                .and_then(|letter| {
+                                    letter
+                                        .eq("M")
+                                        .then_some("M")
+                                        .or_else(|| letter.eq("S").then_some("S"))
+                                })
+                        })
+                        .and_then(|top_right_letter| {
+                            line_ix
+                                .checked_add(1)
+                                .and_then(|line_ix| lines.get(line_ix))
+                                .and_then(|line| {
+                                    a_ix.checked_sub(1)
+                                        .and_then(|letter_ix| line.chars().nth(letter_ix))
+                                        .and_then(|letter| letter.to_string().into())
+                                        .and_then(|letter| {
+                                            if top_right_letter.eq("M") && letter.eq("S") {
+                                                Some(())
+                                            } else if top_right_letter.eq("S") && letter.eq("M") {
+                                                Some(())
+                                            } else {
+                                                None
+                                            }
+                                        })
+                                })
+                        })
+                })
+                .map(|_| 1)
+                .unwrap_or(0);
+            line_total + iter_result
+        });
+        total + line_total
+    });
+    println!("Part Two: X-MAS appears {result} times");
 }
