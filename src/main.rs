@@ -1,6 +1,7 @@
 use clap::{Parser, Subcommand};
 
 mod ceres_search;
+mod guard_gallivant;
 mod historian_hysteria;
 mod mull_it_over;
 mod print_queue;
@@ -41,6 +42,11 @@ enum Puzzle {
         #[arg(default_value = "input.txt")]
         path: String,
     },
+    /// Day 6: Guard Gallivant
+    GuardGallivant {
+        #[arg(default_value = "input.txt")]
+        path: String,
+    },
 }
 fn main() {
     match Command::parse().puzzle {
@@ -49,5 +55,6 @@ fn main() {
         Puzzle::MullItOver { path } => mull_it_over::solve(path),
         Puzzle::CeresSearch { path } => ceres_search::solve(path),
         Puzzle::PrintQueue { path } => print_queue::solve(path),
+        Puzzle::GuardGallivant { path } => guard_gallivant::solve(path),
     }
 }
