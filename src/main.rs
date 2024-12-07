@@ -1,5 +1,6 @@
 use clap::{Parser, Subcommand};
 
+mod bridge_repair;
 mod ceres_search;
 mod guard_gallivant;
 mod historian_hysteria;
@@ -47,6 +48,11 @@ enum Puzzle {
         #[arg(default_value = "input.txt")]
         path: String,
     },
+    /// Day 7: Bridge Repair
+    BridgeRepair {
+        #[arg(default_value = "input.txt")]
+        path: String,
+    },
 }
 fn main() {
     match Command::parse().puzzle {
@@ -56,5 +62,6 @@ fn main() {
         Puzzle::CeresSearch { path } => ceres_search::solve(path),
         Puzzle::PrintQueue { path } => print_queue::solve(path),
         Puzzle::GuardGallivant { path } => guard_gallivant::solve(path),
+        Puzzle::BridgeRepair { path } => bridge_repair::solve(path),
     }
 }
