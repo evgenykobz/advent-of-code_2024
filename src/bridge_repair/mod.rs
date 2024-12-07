@@ -23,10 +23,15 @@ pub fn solve(path: String) {
                 })
                 .and_then(|(original_sum, numbers)| {
                     let positions = numbers.len().sub(1);
-                    match (0..2usize.pow(positions as u32))
+                    match (0..3usize.pow(positions as u32))
                         .map(|i| {
                             (0..positions)
-                                .map(|j| if i & (1 << j) != 0 { "*" } else { "+" })
+                                .map(|j| match (i / 3usize.pow(j as u32)) % 3 {
+                                    0 => "+",
+                                    1 => "*",
+                                    2 => "||",
+                                    _ => unreachable!(),
+                                })
                                 .collect::<Vec<_>>()
                         })
                         .try_for_each(|operators| {
@@ -46,7 +51,12 @@ pub fn solve(path: String) {
                                                 value if value.eq(&"*") => {
                                                     sum.checked_mul(*number as u64)
                                                 }
-                                                _ => panic!("Only + and * operators are supported"),
+                                                value if value.eq(&"||") => {
+                                                    let mut sum = sum.to_string();
+                                                    sum.push_str(&number.to_string());
+                                                    sum.parse::<u64>().ok()
+                                                }
+                                                _ => unreachable!(),
                                             })
                                             .unwrap_or(sum)
                                     },
@@ -63,5 +73,5 @@ pub fn solve(path: String) {
                 })
         })
         .sum();
-    println!("Part One: total calibration result is {result}")
+    println!("Total calibration result is {result}")
 }
