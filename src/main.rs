@@ -7,6 +7,7 @@ mod historian_hysteria;
 mod mull_it_over;
 mod print_queue;
 mod red_nosed_reports;
+mod resonant_collinearity;
 
 #[derive(Parser)]
 #[command(name = "Advent Of Code 2024")]
@@ -53,6 +54,11 @@ enum Puzzle {
         #[arg(default_value = "input.txt")]
         path: String,
     },
+    /// Day 8: Resonant Collinearity
+    ResonantCollinearity {
+        #[arg(default_value = "input.txt")]
+        path: String,
+    },
 }
 fn main() {
     match Command::parse().puzzle {
@@ -63,5 +69,6 @@ fn main() {
         Puzzle::PrintQueue { path } => print_queue::solve(path),
         Puzzle::GuardGallivant { path } => guard_gallivant::solve(path),
         Puzzle::BridgeRepair { path } => bridge_repair::solve(path),
+        Puzzle::ResonantCollinearity { path } => resonant_collinearity::solve(path),
     }
 }
